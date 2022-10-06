@@ -1,0 +1,94 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+var delone : Delaunay
+
+const RANGE = 20
+
+# Called when the node enters the scene tree for the first time.
+# Вызывается, когда узел впервые входит в дерево сцены.
+func _ready():
+	var screen_size = OS.get_screen_size()
+	var screen_size_x = screen_size.x
+	var screen_size_y = screen_size.y
+	delone = Delaunay.new(Rect2(0,0,screen_size_x,screen_size_y))
+	
+	
+	var x_coef = screen_size_x/RANGE
+	var y_coef = screen_size_y/RANGE
+	
+	randomize()
+	for xn in range(RANGE):
+		for yn in range(RANGE):
+			add_point(
+				Vector2(
+					xn * x_coef + rand_range(-1*x_coef,x_coef),
+					yn * y_coef + rand_range(-1*y_coef,y_coef)))
+
+
+	var triangles = delone.triangulate()
+	var sites = delone.make_voronoi(triangles)
+	for site in sites:
+		show_site(site)	
+
+
+func _input(event):
+	if event.is_action_pressed(\"ui_accept\"):
+		regenerate()
+
+
+func regenerate():
+	for n in self.get_children():
+		self.remove_child(n)
+		n.queue_free()
+	_ready()
+
+
+func add_point(point: Vector2):
+#	var polygon = Polygon2D.new()
+#	var p = PoolVector2Array()
+#	var s = 2
+#	p.append(Vector2(-s,s))
+#	p.append(Vector2(s,s))
+#	p.append(Vector2(s,-s))
+#	p.append(Vector2(-s,-s))
+#	polygon.polygon = p
+#	polygon.color = Color.black
+#	polygon.position = point
+#	add_child(polygon)
+	delone.add_point(point)
+
+
+func show_site(site: Delaunay.VoronoiSite):
+	var line = Line2D.new()
+	var p = site.polygon
+	p.append(p[0])
+	line.points = p
+	line.width = 3
+	line.default_color = Color.black
+	add_child(line)
+
+
+func _on_Button_pressed():
+	regenerate()
+"
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Generator" type="Node2D" parent="."]
+position = Vector2( 0, 1 )
+script = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Generator"]
+light_mask = 0
+
+[node name="Button" type="Button" parent="."]
+margin_left = 49.0
+margin_top = 23.0
+margin_right = 147.0
+margin_bottom = 60.0
+text = "Generate"
+
+[connection signal="pressed" from="Button" to="Generator" method="_on_Button_pressed"]
