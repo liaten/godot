@@ -76,6 +76,11 @@ func regenerate():
 
 
 func add_point(point: Vector2):
+	show_centroid(point)
+	delone.add_point(point)
+
+
+func show_centroid(point: Vector2):
 	var polygon = Polygon2D.new()
 	var p = PoolVector2Array()
 	var s = 4
@@ -87,7 +92,6 @@ func add_point(point: Vector2):
 	polygon.color = Color.black
 	polygon.position = point
 	add_child(polygon)
-	delone.add_point(point)
 
 
 func show_site(site: Delaunay.VoronoiSite):
