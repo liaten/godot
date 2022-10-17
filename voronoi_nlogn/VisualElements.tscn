@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://VisualElements.gd" type="Script" id=1]
+
+[node name="Visuals" type="Node"]
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 19.0
+margin_top = 5.0
+margin_right = 471.0
+margin_bottom = 121.0
+
+[node name="Button" type="Button" parent="."]
+light_mask = 0
+margin_left = 259.0
+margin_top = 5.0
+margin_right = 357.0
+margin_bottom = 40.0
+text = "Generate"
+
+[node name="LineEditRange" type="LineEdit" parent="."]
+margin_left = 193.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 40.0
+text = "0"
+
+[node name="Label" type="Label" parent="."]
+light_mask = 0
+margin_left = 19.0
+margin_top = 5.0
+margin_right = 183.0
+margin_bottom = 121.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Input the number of sites
+in range of: [1,1000]
+Push the \"Generate\"
+burtton or Space or Enter
+on keyboard.
+Press H to hide all visual
+elements."
+
+[node name="Time_Elapsed" type="Label" parent="."]
+margin_left = 368.0
+margin_top = 5.0
+margin_right = 458.0
+margin_bottom = 35.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Time elapsed:"
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="text_changed" from="LineEditRange" to="." method="_on_LineEditRange_text_changed"]
