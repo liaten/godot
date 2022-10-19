@@ -1,3 +1,7 @@
+# Триангуляция Делоне согласно алгоритму Боуэра-Ватсона
+# со сложностью O(n^2)
+# https://ru.wikipedia.org/wiki/Алгоритм_Боуэра_—_Ватсона
+# https://en.wikipedia.org/wiki/Bowyer–Watson_algorithm
 class_name Delaunay
 
 # ==== Классы ====
@@ -86,8 +90,8 @@ class Triangle:
 class VoronoiSite:
 	var center: Vector2
 	var polygon: PoolVector2Array # точки, расположенные по часовой стрелке
-	var source_triangles: Array # массив треугольников, создающих
-	var neightbours: Array # массив рёбер вороного
+	var source_triangles: Array # массив треугольников, создающих массив рёбер вороного
+	var neightbours: Array
 	
 	
 	func _init(center_outer: Vector2):
@@ -97,7 +101,7 @@ class VoronoiSite:
 	func _sort_source_triangles(a: Triangle, b: Triangle) -> bool:
 		var da = center.direction_to(a.center).angle()
 		var db = center.direction_to(b.center).angle()
-		return da < db # clockwise sort
+		return da < db # сортировка по часовой стрелке
 	
 	
 	func get_boundary() -> Rect2:
@@ -131,7 +135,7 @@ static func calculate_rect(points_outer: PoolVector2Array) -> Rect2:
 	var rect = Rect2(points_outer[0], Vector2.ZERO)
 	for point in points_outer:
 		rect = rect.expand(point)
-	return rect.grow(10)
+	return rect.grow(0)
 
 
 var points: PoolVector2Array
@@ -142,7 +146,7 @@ var _rect_super_triangle1: Triangle
 var _rect_super_triangle2: Triangle
 
 
-# ==== CONSTRUCTOR ====
+# ==== Конструктор ====
 func _init(rect: Rect2 = Rect2()):
 	set_rectangle(rect)
 
@@ -225,7 +229,7 @@ func triangulate() -> Array: # массив треугольников
 	return triangulation
 
 
-func make_voronoi(triangulation: Array) -> Array: # возвращает массив точек вороного
+func make_voronoi(triangulation: Array) -> Array: # возвращает массив ребер вороного
 	var sites: Array = []
 
 	var completion_counter: Array = [] # массив Vector2, а не PoolVector2Array тк в 1 случае больше доступных операций
@@ -274,7 +278,7 @@ func make_voronoi(triangulation: Array) -> Array: # возвращает мас�
 			if neightbour != null:
 				site.neightbours.append(neightbour)
 	
-	return sites	
+	return sites # рёбра
 
 
 # ==== ПРИВАТНЫЕ ФУНКЦИИ ====
@@ -297,12 +301,14 @@ func _make_outer_polygon(triangles: Array, out_polygon: Array) -> void:
 		out_polygon.erase(edge)
 
 
+# ищет плохие треугольники 
 func _find_bad_triangles(point: Vector2, triangles: Array, out_bad_triangles: Array) -> void:
 	for triangle in triangles:
 		if triangle.is_point_inside_circumcircle(point):
 			out_bad_triangles.append(triangle)
 
 
+# ищет соседей
 func _find_voronoi_neightbour(site: VoronoiSite, triangle: Triangle, possibilities: Array) -> VoronoiEdge:
 	var triangle_index = site.source_triangles.find(triangle)
 	var next_triangle_index = triangle_index + 1
