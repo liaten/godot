@@ -19,7 +19,7 @@ class Edge:
 		
 	func center() -> Vector2:
 		return (a + b) / 2
-	
+
 
 # Треугольник Делоне
 class Triangle:
@@ -62,12 +62,15 @@ class Triangle:
 		center = circum * 0.5
 		radius_sqr = a.distance_squared_to(center)
 	
+	
 	func is_point_inside_circumcircle(point: Vector2) -> bool:
 		return center.distance_squared_to(point) < radius_sqr
-		
+	
+	
 	func is_corner(point: Vector2) -> bool:
 		return point == a || point == b || point == c
-		
+	
+	
 	func get_corner_opposite_edge(corner: Vector2) -> Edge:
 		if corner == a:
 			return edge_bc
@@ -78,6 +81,7 @@ class Triangle:
 		else:
 			return null
 
+
 # Сайт - центральная точка, вокруг которой строится локус
 class VoronoiSite:
 	var center: Vector2
@@ -85,13 +89,16 @@ class VoronoiSite:
 	var source_triangles: Array # массив треугольников, создающих
 	var neightbours: Array # массив рёбер вороного
 	
+	
 	func _init(center_outer: Vector2):
 		self.center = center_outer
-		
+	
+	
 	func _sort_source_triangles(a: Triangle, b: Triangle) -> bool:
 		var da = center.direction_to(a.center).angle()
 		var db = center.direction_to(b.center).angle()
 		return da < db # clockwise sort
+	
 	
 	func get_boundary() -> Rect2:
 		var rect = Rect2(polygon[0], Vector2.ZERO)
@@ -120,11 +127,11 @@ class VoronoiEdge:
 
 
 # Вычисляет прямоугольник, содержащий все заданные точки
-static func calculate_rect(points_outer: PoolVector2Array, padding_outer: float = 0.0) -> Rect2:
+static func calculate_rect(points_outer: PoolVector2Array) -> Rect2:
 	var rect = Rect2(points_outer[0], Vector2.ZERO)
 	for point in points_outer:
 		rect = rect.expand(point)
-	return rect.grow(padding_outer)
+	return rect.grow(10)
 
 
 var points: PoolVector2Array

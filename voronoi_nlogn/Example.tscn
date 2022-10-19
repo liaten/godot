@@ -5,9 +5,10 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-var delone : Delaunay
+var delone : Delaunay = null
 
-var RANGE = 100
+var RANGE:int = 10
+const SEED:int = 0
 
 var are_visuals_hidden: bool = false
 var time_now: int = 0
@@ -20,6 +21,7 @@ var screen_size_y = OS.get_screen_size().y
 # придумываем начальное расстояние от края экрана, чтобы картинка
 # выглядела правильно (по бокам будет океан)
 var dispersion = screen_size_x * 0.05
+
 
 # Вызываем, когда узел впервые появляется в дереве сцены.
 func _ready():
@@ -39,15 +41,18 @@ func _ready():
 			screen_size_x-dispersion,
 			screen_size_y-dispersion))
 	
-	randomize()
+	seed(SEED)
 	for _i in range(RANGE):
 		add_point(
 			Vector2(
 				rand_range(0+dispersion,screen_size_x-dispersion),
 				rand_range(0+dispersion,screen_size_y-dispersion)))
-
-	for site in delone.make_voronoi(delone.triangulate()):
+	
+	var triangulars: Array = delone.triangulate()
+	var voronoi: Array = delone.make_voronoi(triangulars)
+	for site in voronoi:
 		show_site(site)
+		pass
 	
 	# считаем время выполнения всех операций
 	if !are_visuals_hidden:
