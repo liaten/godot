@@ -1,6 +1,5 @@
 extends Node
 
-
 func _on_LineEditRange_text_changed(new_text):
 	get_tree().root.get_node("/root/Node2D/Generator").change_main_range(new_text)
 
