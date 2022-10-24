@@ -5,7 +5,7 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-var delone : Delaunay = null
+var delone : Delaunay_Bower = null
 
 var RANGE:int = 10
 const SEED:int = 0
@@ -34,7 +34,7 @@ func _ready():
 	get_parent().get_node(\"Visuals/LineEditRange\").text = str(RANGE)
 	# создаём какую-то непонятную штуку со сложностью O(n^2)
 	# TODO: переделать на сложность O(n*log(n))
-	delone = Delaunay.new(
+	delone = Delaunay_Bower.new(
 		Rect2(
 			0+dispersion,
 			0+dispersion,
@@ -100,7 +100,7 @@ func show_centroid(point: Vector2):
 	add_child(polygon)
 
 
-func show_site(site: Delaunay.VoronoiSite):
+func show_site(site: Delaunay_Bower.VoronoiSite):
 	var line = Line2D.new()
 	var p = site.polygon
 	p.append(p[0])
@@ -114,6 +114,28 @@ func change_main_range(new_text):
 	var _new_range = int(new_text)
 	if(_new_range > 0 && _new_range < 100000):
 		RANGE = _new_range
+
+
+func generateRandomDiagram(nbPoints: int) -> VoronoiDiagram:
+#	генерация точек
+	var points: PoolVector2Array = generatePoints(nbPoints)
+	
+#	Сборка диаграммы
+	var algorithm: FortuneAlgorithm = FortuneAlgorithm.new(points)
+	algorithm.construct()
+	
+	var diagram:VoronoiDiagram
+	return diagram
+
+
+func generatePoints(nbPoints_o: int) ->PoolVector2Array:
+	var seed_var = 0;
+	print(\"seed: \",seed_var,\"\\n\")
+	seed(seed_var)
+	var points:PoolVector2Array = []
+	for i in range(nbPoints_o):
+		points.append(Vector2(randf(),randf()))
+	return points
 "
 
 [node name="Node2D" type="Node2D"]

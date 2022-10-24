@@ -10,12 +10,60 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
-"class": "Delaunay",
+"class": "Arc",
 "language": "GDScript",
-"path": "res://Delanulay.gd"
+"path": "res://Arc.gd"
+}, {
+"base": "Reference",
+"class": "Beachline",
+"language": "GDScript",
+"path": "res://Beachline.gd"
+}, {
+"base": "Reference",
+"class": "Box",
+"language": "GDScript",
+"path": "res://Box.gd"
+}, {
+"base": "Reference",
+"class": "Delaunay_Bower",
+"language": "GDScript",
+"path": "res://Delanulay_Bower.gd"
+}, {
+"base": "Reference",
+"class": "Delaunay_Fortune",
+"language": "GDScript",
+"path": "res://Delanulay_Fortune.gd"
+}, {
+"base": "Reference",
+"class": "Event",
+"language": "GDScript",
+"path": "res://Event.gd"
+}, {
+"base": "VoronoiDiagram",
+"class": "FortuneAlgorithm",
+"language": "GDScript",
+"path": "res://FortuneAlgorithm.gd"
+}, {
+"base": "Reference",
+"class": "PriorityQueue",
+"language": "GDScript",
+"path": "res://PriorityQueue.gd"
+}, {
+"base": "Reference",
+"class": "VoronoiDiagram",
+"language": "GDScript",
+"path": "res://VoronoiDiagram.gd"
 } ]
 _global_script_class_icons={
-"Delaunay": ""
+"Arc": "",
+"Beachline": "",
+"Box": "",
+"Delaunay_Bower": "",
+"Delaunay_Fortune": "",
+"Event": "",
+"FortuneAlgorithm": "",
+"PriorityQueue": "",
+"VoronoiDiagram": ""
 }
 
 [application]

@@ -2,7 +2,7 @@
 # со сложностью O(n^2)
 # https://ru.wikipedia.org/wiki/Алгоритм_Боуэра_—_Ватсона
 # https://en.wikipedia.org/wiki/Bowyer–Watson_algorithm
-class_name Delaunay
+class_name Delaunay_Bower
 
 # ==== Классы ====
 
