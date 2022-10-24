@@ -11,3 +11,5 @@ export_presets.cfg
 data_*/
 
 *.x86_64
+
+*.so
